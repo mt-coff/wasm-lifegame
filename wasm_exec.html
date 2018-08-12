@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>Lifegame by wasm</title>
+</head>
+
+<body>
+
+  <div>
+    <canvas id="canvas" height="500" width="500"></canvas>
+  </div>
+
+  <div>
+    <button id="btnStart">すたーと</button>
+  </div>
+
+  <script src="wasm_exec.js"></script>
+  <script>
+    const go = new Go();
+    let mod, inst;
+    window.onload = async () => {
+      await WebAssembly.instantiateStreaming(fetch("test.wasm"), go.importObject)
+        .then(result => {
+          mod = result.module;
+          inst = result.instance;
+        });
+      await go.run(inst)
+    }
+  </script>
+  <style>
+    div {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      width: 10rem;
+    }
+  </style>
+</body>
